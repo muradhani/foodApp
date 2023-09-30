@@ -3,6 +3,7 @@ package com.example.foodapp.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -58,7 +59,7 @@ class home : Fragment(),MealListener ,CategoryListener{
 
         binding.firstCardView.setOnClickListener {
             val intent = Intent(requireActivity(), MealActivity::class.java).apply {
-                putExtra("meal",meal as Serializable)
+                putExtra("meal",meal.idMeal.toString())
             }
             startActivity(intent)
         }
@@ -76,14 +77,10 @@ class home : Fragment(),MealListener ,CategoryListener{
 
     override fun onMealClicked(meal: MealX) {
         //Toast.makeText(requireContext(),meal.idMeal,Toast.LENGTH_SHORT).show()
-        viewModel.getMeal(meal.idMeal)
-        viewModel.specificMealmutable.observe(viewLifecycleOwner, Observer {
             val intent = Intent(requireActivity(), MealActivity::class.java).apply {
-                putExtra("meal",it as Serializable)
+                putExtra("meal",meal.idMeal)
             }
             startActivity(intent)
-        })
-
     }
 
     override fun onFavouriteClicked(meal: MealX) {

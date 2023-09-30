@@ -2,6 +2,7 @@ package com.example.foodapp.activites
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -15,19 +16,25 @@ import com.example.foodapp.pojo.Meal
 import com.example.foodapp.viewmodels.MealActivityViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class MealActivity : AppCompatActivity() {
     lateinit var binding: ActivityMealBinding
     lateinit var meal: Meal
+    lateinit var mealId :String
     val viewModel : MealActivityViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_meal)
+        binding.viewModel = viewModel
         val intent = intent
-        meal = intent.getSerializableExtra("meal") as Meal
-        binding.meal = meal
-        Glide.with(this).load(meal.strMealThumb).into(binding.mealImg)
+        mealId = intent.getStringExtra("meal").toString()
+        Log.i("home",mealId)
+        lifecycleScope.launch {
+            viewModel.getMeal(mealId)
+        }
+
 
     }
 

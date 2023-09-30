@@ -58,20 +58,20 @@ class HomeFramgmentViewModel: ViewModel() {
             }
         })
     }
-    fun getMeal(id:String){
-        RetrofitInstance.retrofit.getMeal(id).enqueue(object:Callback<mealResponse>{
-            override fun onResponse(call: Call<mealResponse>, response: Response<mealResponse>) {
-                if (response.body()!= null){
-                    val meal = response.body()!!.meals[0]
-                    _specificMealmutable.postValue(meal)
-                }
-            }
-
-            override fun onFailure(call: Call<mealResponse>, t: Throwable) {
-
-            }
-        } )
-    }
+//    fun getMeal(id:String){
+//        RetrofitInstance.retrofit.getMeal(id).enqueue(object:Callback<mealResponse>{
+//            override fun onResponse(call: Call<mealResponse>, response: Response<mealResponse>) {
+//                if (response.body()!= null){
+//                    val meal = response.body()!!.meals[0]
+//                    _specificMealmutable.postValue(meal)
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<mealResponse>, t: Throwable) {
+//
+//            }
+//        } )
+//    }
 
     fun getCategoryList(){
         RetrofitInstance.retrofit.getCategoriesList().enqueue(object:Callback<CategoryResponse>{

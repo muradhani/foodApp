@@ -18,17 +18,17 @@ import retrofit2.Response
 class CategoryItemsViewModel:ViewModel() {
     private val _mealList = MutableLiveData<List<MealX>>()
     val mealList :LiveData<List<MealX>> = _mealList
-    suspend fun getListMeals(category: String): Flow<List<MealX>> = flow {
-        try {
-            val response = RetrofitInstance.retrofit.getMealListflow(category)
-            if (response.isSuccessful) {
-                val meals = response.body()?.meals
-                if (meals != null) {
-                    emit(meals)
-                }
-            }
-        } catch (e: Exception) {
-            // Handle exceptions
-        }
-    }.flowOn(Dispatchers.IO)
+//    suspend fun getListMeals(category: String): Flow<List<MealX>> = flow {
+//        try {
+//            val response = RetrofitInstance.retrofit.getMealListflow(category)
+//            if (response.isSuccessful) {
+//                val meals = response.body()?.meals
+//                if (meals != null) {
+//                    emit(meals)
+//                }
+//            }
+//        } catch (e: Exception) {
+//            // Handle exceptions
+//        }
+//    }.flowOn(Dispatchers.IO)
 }

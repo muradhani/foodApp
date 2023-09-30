@@ -30,10 +30,10 @@ class CategoryItems : AppCompatActivity(), CategoryItemListener {
 
         coroutineScope.launch {
             category?.let {category->
-                viewModel.getListMeals(category).collect{
-                    val adapter = CategoryItemsAdapter(it, this@CategoryItems)
-                    binding.rvItems.adapter = adapter
-                }
+//                viewModel.getListMeals(category).collect{
+//                    val adapter = CategoryItemsAdapter(it, this@CategoryItems)
+//                    binding.rvItems.adapter = adapter
+//                }
 
             }
         }
