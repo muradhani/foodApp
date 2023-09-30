@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newCoroutineContext
+import kotlinx.coroutines.withContext
 import kotlin.math.log
 
 class MealActivity : AppCompatActivity() {
@@ -40,6 +41,7 @@ class MealActivity : AppCompatActivity() {
             viewModel.getMeal(mealId)
             viewModel._mealMutable.observe(this@MealActivity, Observer {
                 if (it is State.Success){
+                    meal = it.data
                     binding.meal = it.data
                     binding.loadingProgressBar.visibility =View.GONE
                 }
@@ -50,6 +52,17 @@ class MealActivity : AppCompatActivity() {
                     binding.loadingProgressBar.visibility =View.GONE
                 }
             })
+        }
+        binding.favoriateBtn.setOnClickListener {
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO){
+                    val id =MealDatabase.getInstance(this@MealActivity).mealDao().insertAll(meal)
+                    withContext(Dispatchers.Main){
+                        Toast.makeText(baseContext,id.toString(),Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
         }
     }
 
