@@ -21,26 +21,25 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class HomeFramgmentViewModel: ViewModel() {
-    private val _randomMeal = MutableLiveData<State<Meal>>()
-    val randomMeal :LiveData<State<Meal>> = _randomMeal
+    private var _randomMeal = MutableLiveData<State<Meal>>()
+    var randomMeal :LiveData<State<Meal>> = _randomMeal
 
     private var _randomMealList = MutableLiveData<State<List<MealX>>>()
     var randomMealList : LiveData<State<List<MealX>>> = _randomMealList
 
-    private val _specificMealmutable = MutableLiveData<Meal>()
-    val specificMealmutable:LiveData<Meal> = _specificMealmutable
+//    private val _specificMealmutable = MutableLiveData<Meal>()
+//    val specificMealmutable:LiveData<Meal> = _specificMealmutable
     //val mealList :LiveData<List<MealX>> = _mealList
 
-    private val _categorieslmutable = MutableLiveData<List<Category>>()
-    val categorieslmutable:LiveData<List<Category>> = _categorieslmutable
+    private var _categoriesList = MutableLiveData<State<List<Category>>>()
+    var categoriesList :LiveData<State<List<Category>>> = _categoriesList
     val repository=Repository()
     init {
         viewModelScope.launch {
             getRandomMeal()
             getListMeals()
+            getCategoryList()
         }
-
-        getCategoryList()
     }
     suspend fun getRandomMeal(){
         repository.getRandomMeal().collect{
@@ -71,18 +70,9 @@ class HomeFramgmentViewModel: ViewModel() {
 //        } )
 //    }
 
-    fun getCategoryList(){
-        RetrofitInstance.retrofit.getCategoriesList().enqueue(object:Callback<CategoryResponse>{
-            override fun onResponse(call: Call<CategoryResponse>, response: Response<CategoryResponse>) {
-                if (response.body()!= null){
-                    val categories = response.body()!!.categories
-                    _categorieslmutable.postValue(categories)
-                }
-            }
-
-            override fun onFailure(call: Call<CategoryResponse>, t: Throwable) {
-
-            }
-        } )
+    suspend fun getCategoryList(){
+       repository.getCategoryList().collect{
+           _categoriesList.postValue(it)
+       }
     }
 }

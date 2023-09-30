@@ -1,6 +1,8 @@
 package com.example.foodapp.repositories
 
 import android.util.Log
+import com.example.foodapp.pojo.Category
+import com.example.foodapp.pojo.CategoryResponse
 import com.example.foodapp.pojo.Meal
 import com.example.foodapp.pojo.MealX
 import com.example.foodapp.retrofit.RetrofitInstance
@@ -71,6 +73,31 @@ class Repository {
               val errorMessage = "Network error: ${e.message}"
               emit(State.Error(errorMessage))
           }
+        }
+
+    }
+    suspend fun getCategoryList():Flow<State<List<Category>>>{
+        return flow {
+            emit(State.Loading)
+            try {
+                var result =  RetrofitInstance.retrofit.getCategoriesList()
+                if (result.isSuccessful){
+                    val categoryList = result.body()?.categories
+                    if (categoryList != null){
+                        emit(State.Success(categoryList))
+                    }
+                    else{
+                        emit(State.Error("No category data found"))
+                    }
+
+                }else {
+                    val errorMessage = result.errorBody()?.string() ?: "Unknown error"
+                    emit(State.Error(errorMessage))
+                }
+            }catch (e: Exception) {
+                val errorMessage = "Network error: ${e.message}"
+                emit(State.Error(errorMessage))
+            }
         }
 
     }
