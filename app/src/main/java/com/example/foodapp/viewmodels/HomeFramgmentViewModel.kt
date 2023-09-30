@@ -24,10 +24,12 @@ class HomeFramgmentViewModel: ViewModel() {
     private val _randomMeal = MutableLiveData<State<Meal>>()
     val randomMeal :LiveData<State<Meal>> = _randomMeal
 
-    private val _mealList = MutableLiveData<List<MealX>>()
+    private var _randomMealList = MutableLiveData<State<List<MealX>>>()
+    var randomMealList : LiveData<State<List<MealX>>> = _randomMealList
+
     private val _specificMealmutable = MutableLiveData<Meal>()
     val specificMealmutable:LiveData<Meal> = _specificMealmutable
-    val mealList :LiveData<List<MealX>> = _mealList
+    //val mealList :LiveData<List<MealX>> = _mealList
 
     private val _categorieslmutable = MutableLiveData<List<Category>>()
     val categorieslmutable:LiveData<List<Category>> = _categorieslmutable
@@ -35,8 +37,9 @@ class HomeFramgmentViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             getRandomMeal()
+            getListMeals()
         }
-        getListMeals()
+
         getCategoryList()
     }
     suspend fun getRandomMeal(){
@@ -48,18 +51,10 @@ class HomeFramgmentViewModel: ViewModel() {
 //        return mealmutable
 //    }
 
-    fun getListMeals(){
-        RetrofitInstance.retrofit.getMealList("Seafood").enqueue(object :Callback<ListMeals>{
-            override fun onResponse(call: Call<ListMeals>, response: Response<ListMeals>) {
-                if (response.body()!= null){
-                    _mealList.postValue(response.body()!!.meals)
-                }
-            }
-
-            override fun onFailure(call: Call<ListMeals>, t: Throwable) {
-
-            }
-        })
+    suspend fun getListMeals(){
+        repository.getMealList("Seafood").collect{
+            _randomMealList.postValue(it)
+        }
     }
 //    fun getMeal(id:String){
 //        RetrofitInstance.retrofit.getMeal(id).enqueue(object:Callback<mealResponse>{

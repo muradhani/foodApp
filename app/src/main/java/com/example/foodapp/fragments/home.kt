@@ -51,21 +51,8 @@ class home : Fragment(),MealListener ,CategoryListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       viewModel.randomMeal.observe(viewLifecycleOwner, Observer {
-           when (it) {
-               is State.Success -> {
-                   Glide.with(this).load(it.data.strMealThumb).into(binding.randomMealIv)
-                   binding.randomMealProgressBar.visibility = View.GONE
-                   meal = it.data
-               }
-               is State.Loading -> {
-                   binding.randomMealProgressBar.visibility = View.VISIBLE
-               }
-               else -> {
-                   // Do nothing
-               }
-           }
-       })
+        observeRandomMeal()
+        observeRandomMealList()
 
         binding.firstCardView.setOnClickListener {
             val intent = Intent(requireActivity(), MealActivity::class.java).apply {
@@ -73,15 +60,51 @@ class home : Fragment(),MealListener ,CategoryListener{
             }
             startActivity(intent)
         }
-        viewModel.mealList.observe(viewLifecycleOwner, Observer {
-            mealList = it
-            val adapter = MealAdapter(mealList, this)
-            binding.recyclerViewRandom.adapter = adapter
-        })
+//        viewModel.mealList.observe(viewLifecycleOwner, Observer {
+//            mealList = it
+//            val adapter = MealAdapter(mealList, this)
+//            binding.recyclerViewRandom.adapter = adapter
+//        })
         viewModel.categorieslmutable.observe(viewLifecycleOwner, Observer {
             val CategoryList = it
             val adapter = CategoryAdapter(CategoryList, this)
             binding.rvCategories.adapter = adapter
+        })
+    }
+    private fun observeRandomMealList(){
+        viewModel.randomMealList.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is State.Success -> {
+                    mealList = it.data
+                    val adapter = MealAdapter(mealList, this)
+                    binding.recyclerViewRandom.adapter = adapter
+                    binding.recyclerViewRandomFrameLayoutProgressBar.visibility = View.GONE
+                }
+                is State.Loading -> {
+                    binding.randomMealProgressBar.visibility = View.VISIBLE
+                }
+                else -> {
+                    // Do nothing
+                }
+            }
+        })
+    }
+
+    private fun observeRandomMeal() {
+        viewModel.randomMeal.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is State.Success -> {
+                    Glide.with(this).load(it.data.strMealThumb).into(binding.randomMealIv)
+                    binding.randomMealProgressBar.visibility = View.GONE
+                    meal = it.data
+                }
+                is State.Loading -> {
+                    binding.randomMealProgressBar.visibility = View.VISIBLE
+                }
+                else -> {
+                    // Do nothing
+                }
+            }
         })
     }
 

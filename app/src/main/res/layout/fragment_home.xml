@@ -109,20 +109,36 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/first_card_view" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView_random"
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_120sdp"
-                        android:layout_marginStart="@dimen/_20sdp"
+                        android:id="@+id/recyclerView_random_frame_layout"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_20sdp"
-                        android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/random_meal_item"
-                        />
+                        app:layout_constraintTop_toBottomOf="@+id/textView">
+                        <ProgressBar
+                            android:id="@+id/recyclerView_random_frame_layout_progressBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:visibility="gone"/>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerView_random"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_120sdp"
+
+                            android:layout_marginTop="@dimen/_10sdp"
+
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/random_meal_item"
+                            />
+                    </FrameLayout>
+
 
                     <TextView
                         android:id="@+id/tv_category"
@@ -137,7 +153,7 @@
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/recyclerView_random" />
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerView_random_frame_layout" />
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
