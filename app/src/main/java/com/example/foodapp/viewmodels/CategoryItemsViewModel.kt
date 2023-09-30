@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.example.foodapp.pojo.Category
 import com.example.foodapp.pojo.ListMeals
 import com.example.foodapp.pojo.MealX
+import com.example.foodapp.repositories.Repository
 import com.example.foodapp.retrofit.RetrofitInstance
+import com.example.foodapp.state.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -16,19 +18,12 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class CategoryItemsViewModel:ViewModel() {
-    private val _mealList = MutableLiveData<List<MealX>>()
-    val mealList :LiveData<List<MealX>> = _mealList
-//    suspend fun getListMeals(category: String): Flow<List<MealX>> = flow {
-//        try {
-//            val response = RetrofitInstance.retrofit.getMealListflow(category)
-//            if (response.isSuccessful) {
-//                val meals = response.body()?.meals
-//                if (meals != null) {
-//                    emit(meals)
-//                }
-//            }
-//        } catch (e: Exception) {
-//            // Handle exceptions
-//        }
-//    }.flowOn(Dispatchers.IO)
+    private val _mealList = MutableLiveData<State<List<MealX>>>()
+    val mealList :LiveData<State<List<MealX>>> = _mealList
+    val repository =Repository()
+    suspend fun getListMeals(category: String){
+        repository.getCategoryMeals(category).collect{
+            _mealList.postValue(it)
+        }
+    }
 }

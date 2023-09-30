@@ -19,7 +19,7 @@ interface MealApi {
     @GET("filter.php?")
      suspend fun getMealList(@Query("c") id: String):Response<ListMeals>
     @GET("filter.php?")
-     fun getMealListflow(@Query("c") id: String):Call<ListMeals>
+     suspend fun getMealListflow(@Query("c") id: String):Response<ListMeals>
 
     @GET("categories.php")
     suspend fun getCategoriesList():Response<CategoryResponse>

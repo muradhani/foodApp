@@ -53,23 +53,15 @@ class home : Fragment(),MealListener ,CategoryListener{
 
         observeRandomMeal()
         observeRandomMealList()
-
+        observeCategoryList()
         binding.firstCardView.setOnClickListener {
             var intent = Intent(requireActivity(), MealActivity::class.java).apply {
                 putExtra("meal",meal.idMeal.toString())
             }
             startActivity(intent)
         }
-//        viewModel.mealList.observe(viewLifecycleOwner, Observer {
-//            mealList = it
-//            val adapter = MealAdapter(mealList, this)
-//            binding.recyclerViewRandom.adapter = adapter
-//        })
-//        viewModel.categorieslmutable.observe(viewLifecycleOwner, Observer {
-//            val CategoryList = it
-//            val adapter = CategoryAdapter(CategoryList, this)
-//            binding.rvCategories.adapter = adapter
-//        })
+    }
+    private fun observeCategoryList(){
         viewModel.categoriesList.observe(viewLifecycleOwner, Observer {
             when(it){
                 is State.Success -> {

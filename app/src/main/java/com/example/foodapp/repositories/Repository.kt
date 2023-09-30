@@ -101,6 +101,22 @@ class Repository {
         }
 
     }
+    suspend fun getCategoryMeals(category: String): Flow<State<List<MealX>>> = flow {
+        try {
+            emit(State.Loading)
+            val response = RetrofitInstance.retrofit.getMealListflow(category)
+            if (response.isSuccessful) {
+                val meals = response.body()?.meals
+                if (meals != null) {
+                    emit(State.Success(meals))
+                }
+            }else{
+                emit(State.Error(response.message()))
+            }
+        } catch (e: Exception) {
+            // Handle exceptions
+        }
+    }.flowOn(Dispatchers.IO)
 
 }
 
