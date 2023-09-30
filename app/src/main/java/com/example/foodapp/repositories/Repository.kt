@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import retrofit2.Response
 
 
 class Repository {
@@ -35,4 +36,17 @@ class Repository {
         }
     }
 
-}
+    suspend fun getRandomMeal():Flow<State<Meal>>{
+        return flow {
+            emit(State.Loading)
+            val response = retrofit.getRandomMeal()
+            if (response.isSuccessful){
+                emit(State.Success(response.body()!!.meals[0]))
+            }
+            else{
+                emit(State.Error(response.message()))
+            }
+        }
+    }
+    }
+

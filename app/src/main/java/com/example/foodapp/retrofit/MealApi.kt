@@ -11,7 +11,7 @@ import retrofit2.http.Query
 
 interface MealApi {
     @GET("random.php")
-     fun getRandomMeal():Call<mealResponse>
+     suspend fun getRandomMeal():Response<mealResponse>
 
     @GET("lookup.php?")
     suspend fun getMeal(@Query("i") id:String):Response<mealResponse>

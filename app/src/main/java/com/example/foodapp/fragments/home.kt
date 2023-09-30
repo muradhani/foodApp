@@ -23,6 +23,7 @@ import com.example.foodapp.databinding.FragmentHomeBinding
 import com.example.foodapp.pojo.Category
 import com.example.foodapp.pojo.Meal
 import com.example.foodapp.pojo.MealX
+import com.example.foodapp.state.State
 import com.example.foodapp.viewmodels.HomeFramgmentViewModel
 import java.io.Serializable
 
@@ -43,18 +44,27 @@ class home : Fragment(),MealListener ,CategoryListener{
     ): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home,container,false)
-
+        binding.viewModel = viewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getRandomMeal()
-        viewModel.getListMeals()
-        viewModel.getCategoryList()
-       viewModel.observeMeal().observe(viewLifecycleOwner, Observer {
-         Glide.with(this).load(it.strMealThumb).into(binding.randomMealIv)
-            meal = it
+
+       viewModel.randomMeal.observe(viewLifecycleOwner, Observer {
+           when (it) {
+               is State.Success -> {
+                   Glide.with(this).load(it.data.strMealThumb).into(binding.randomMealIv)
+                   binding.randomMealProgressBar.visibility = View.GONE
+                   meal = it.data
+               }
+               is State.Loading -> {
+                   binding.randomMealProgressBar.visibility = View.VISIBLE
+               }
+               else -> {
+                   // Do nothing
+               }
+           }
        })
 
         binding.firstCardView.setOnClickListener {

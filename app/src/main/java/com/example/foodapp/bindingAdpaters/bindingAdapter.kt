@@ -6,11 +6,11 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.example.foodapp.state.State
 
-@BindingAdapter("GLideImg")
+@BindingAdapter(value =["app:GLideImg"])
 fun displayImage(view:ImageView,imgUrl:String?){
     Glide.with(view.context).load(imgUrl).into(view)
 }
-@BindingAdapter("showWhenLoading")
+@BindingAdapter(value = ["app:showWhenLoading"])
 fun<T>showLoading(view:View,state: State<T>?){
     if (state is State.Loading){
         view.visibility = View.VISIBLE
