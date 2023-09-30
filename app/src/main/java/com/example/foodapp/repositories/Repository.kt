@@ -32,7 +32,7 @@ class Repository {
                 val errorMessage = "Network error: ${e.message}"
                 emit(State.Error(errorMessage))
             }
-        }.flowOn(Dispatchers.IO)
+        }
     }
 
 }
