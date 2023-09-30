@@ -3,6 +3,7 @@ package com.example.foodapp.activites
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -40,6 +41,13 @@ class MealActivity : AppCompatActivity() {
             viewModel._mealMutable.observe(this@MealActivity, Observer {
                 if (it is State.Success){
                     binding.meal = it.data
+                    binding.loadingProgressBar.visibility =View.GONE
+                }
+                else if(it is State.Loading){
+                    binding.loadingProgressBar.visibility =View.VISIBLE
+                }
+                else{
+                    binding.loadingProgressBar.visibility =View.GONE
                 }
             })
         }
