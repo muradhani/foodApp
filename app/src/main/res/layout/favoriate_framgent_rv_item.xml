@@ -48,13 +48,13 @@
 
             <ImageView
                 android:id="@+id/btn_favoriate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_favoriate"
-                android:layout_marginEnd="@dimen/_10sdp" />
+                android:layout_marginEnd="@dimen/_15sdp" />
 
             <!-- Barrier to make a space and move to a new line -->
             <androidx.constraintlayout.widget.Barrier

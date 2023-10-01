@@ -20,7 +20,7 @@ interface MealDao {
     fun insertAll( meal: Meal):Long
 
     @Delete
-    fun delete(meal: Meal)
+    fun delete(meal: Meal):Int
     @Update
     fun update(meal: Meal)
 }

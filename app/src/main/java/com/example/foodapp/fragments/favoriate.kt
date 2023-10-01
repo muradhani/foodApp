@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -25,6 +26,8 @@ import kotlinx.coroutines.launch
 class favoriate : Fragment(), FavoraiteItemListener {
     val viewModel: FavoriateFramgentViewModel by viewModels()
     lateinit var binding:FragmentFavoriateBinding
+    lateinit var list:List<Meal>
+    lateinit var adapter: FavoraiteFragmentRvAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,8 +48,22 @@ class favoriate : Fragment(), FavoraiteItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observefavoriateMealList()
+        observefavoriateMealRemoveFavoraite()
     }
-fun observefavoriateMealList(){
+
+    private fun observefavoriateMealRemoveFavoraite() {
+        viewModel.removeItemResponse.observe(viewLifecycleOwner, Observer {
+            if (it is State.Success){
+                lifecycleScope.launch {
+                    viewModel.updateData(this@favoriate.requireContext())
+                }
+                //adapter.updateData(it.data)
+                Toast.makeText(this@favoriate.context,it.data.toString(),Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    fun observefavoriateMealList(){
     lifecycleScope.launch {
         viewModel.items.observe(viewLifecycleOwner, Observer {
             when(it){
@@ -54,9 +71,9 @@ fun observefavoriateMealList(){
                     binding.progressbar.visibility = View.VISIBLE
                 }
                 is State.Success -> {
-                    val list = it.toData()
+                    list = it.toData()!!
                     Log.i("home",list.toString())
-                    val adapter = FavoraiteFragmentRvAdapter(list!!, this@favoriate)
+                    adapter = FavoraiteFragmentRvAdapter(list!!, this@favoriate)
                     binding.favoriateItemsRv.layoutManager = LinearLayoutManager(requireContext()) // Set the layout manager
                     binding.favoriateItemsRv.adapter = adapter
                     binding.progressbar.visibility = View.GONE
@@ -81,6 +98,8 @@ fun observefavoriateMealList(){
     }
 
     override fun onFavoriateBtnClicked(meal: Meal) {
-
+        lifecycleScope.launch {
+            viewModel.removeFavoriate(meal,this@favoriate.requireContext())
+        }
     }
 }

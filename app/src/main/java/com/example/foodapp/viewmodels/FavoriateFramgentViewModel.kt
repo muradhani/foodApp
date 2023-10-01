@@ -14,6 +14,9 @@ class FavoriateFramgentViewModel:ViewModel() {
     val repository = Repository()
     private var _items = MutableLiveData<State<List<Meal>?>>()
     var items :LiveData<State<List<Meal>?>> = _items
+
+    private var _removeItemResponse = MutableLiveData<State<Int>>()
+    var removeItemResponse :LiveData<State<Int>> = _removeItemResponse
     suspend fun getAllFavoriateMeals(context: Context){
         repository.getAllFavoraites(context).collect{
             withContext(Dispatchers.Main){
@@ -22,5 +25,12 @@ class FavoriateFramgentViewModel:ViewModel() {
 
         }
     }
-
+    suspend fun removeFavoriate(meal: Meal,context: Context){
+        repository.removeFavoriate(meal,context).collect{
+            _removeItemResponse.postValue(it)
+        }
+    }
+    suspend fun updateData(context: Context) {
+        getAllFavoriateMeals(context)
+    }
 }
