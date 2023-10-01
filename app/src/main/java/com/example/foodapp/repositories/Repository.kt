@@ -144,6 +144,23 @@ class Repository {
         }
 
     }
+    suspend fun getAllFavoraites(context: Context):Flow<State<List<Meal>?>>{
+        return flow {
+            emit(State.Loading)
+            try {
+               val result = MealDatabase.getInstance(context).mealDao().getAll()
+                Log.i("favoriate",result.toString())
+                if (result != null){
+                    emit(State.Success(result))
+                }
+                else{
+                    emit(State.Error("no list"))
+                }
+            }catch (e:Exception){
+
+            }
+        }.flowOn(Dispatchers.IO)
+    }
 }
 
 
