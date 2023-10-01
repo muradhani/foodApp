@@ -7,6 +7,9 @@
         <item name="colorPrimaryVariant">@color/accent</item>
         <item name="android:fontFamily">@font/myfont</item>
     </style>
-
+    <style name="roundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
     <style name="Theme.FoodApp" parent="Base.Theme.FoodApp" />
 </resources>

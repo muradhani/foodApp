@@ -19,18 +19,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_mealImg"
                 android:layout_width="@dimen/_85sdp"
                 android:layout_height="@dimen/_70sdp"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:background="@drawable/rounded_outline"
-                android:clipToOutline="true"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:backgroundTint="@color/primary"/>
+                app:shapeAppearanceOverlay="@style/RoundedSquare"
+                />
 
             <TextView
                 android:id="@+id/tv_meal_name"
