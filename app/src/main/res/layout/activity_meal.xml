@@ -59,7 +59,6 @@
                     />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -72,6 +71,15 @@
             app:backgroundTint="@color/accent"
             app:tint ="@color/white"
             android:layout_marginEnd="@dimen/_10sdp"
+            />
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/linearBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:layout_anchor="@id/appbar"
+            app:layout_anchorGravity="bottom|end"
+            android:visibility="gone"
             />
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

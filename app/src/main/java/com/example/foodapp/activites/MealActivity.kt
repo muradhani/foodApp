@@ -37,6 +37,42 @@ class MealActivity : AppCompatActivity() {
         val intent = intent
         mealId = intent.getStringExtra("meal").toString()
         Log.i("home",mealId)
+        getMealData(mealId)
+        setupListener()
+        observeAddFavoriate()
+
+    }
+
+    private fun observeAddFavoriate() {
+        viewModel.inserMealResponse.observe(this@MealActivity, Observer {
+            when(it){
+                is State.Loading ->{
+                    binding.linearBar.visibility=View.VISIBLE
+                }
+                is State.Success ->{
+                    binding.linearBar.visibility=View.GONE
+                    Toast.makeText(this@MealActivity,"meal added to favoriate",Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    binding.linearBar .visibility=View.GONE
+                }
+            }
+        })
+    }
+
+    private fun setupListener() {
+        binding.favoriateBtn.setOnClickListener {
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO){
+//                  MealDatabase.getInstance(this@MealActivity).mealDao().insertAll(meal)
+                    viewModel.addFavoriate(this@MealActivity,meal)
+                }
+            }
+
+        }
+    }
+
+    private fun getMealData(mealId: String) {
         lifecycleScope.launch {
             viewModel.getMeal(mealId)
             viewModel._mealMutable.observe(this@MealActivity, Observer {
@@ -52,17 +88,6 @@ class MealActivity : AppCompatActivity() {
                     binding.loadingProgressBar.visibility =View.GONE
                 }
             })
-        }
-        binding.favoriateBtn.setOnClickListener {
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO){
-                    val id =MealDatabase.getInstance(this@MealActivity).mealDao().insertAll(meal)
-                    withContext(Dispatchers.Main){
-                        Toast.makeText(baseContext,id.toString(),Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-
         }
     }
 

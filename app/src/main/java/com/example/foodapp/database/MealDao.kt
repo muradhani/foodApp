@@ -16,10 +16,10 @@ interface MealDao {
     fun getAll():List<Meal>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-     fun insertAll( meal: Meal)
+    fun insertAll( meal: Meal):Long
 
     @Delete
-     fun delete(meal: Meal)
+    fun delete(meal: Meal)
     @Update
-     fun update(meal: Meal)
+    fun update(meal: Meal)
 }

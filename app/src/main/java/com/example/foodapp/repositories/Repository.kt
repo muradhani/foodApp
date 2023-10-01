@@ -1,6 +1,8 @@
 package com.example.foodapp.repositories
 
+import android.content.Context
 import android.util.Log
+import com.example.foodapp.database.MealDatabase
 import com.example.foodapp.pojo.Category
 import com.example.foodapp.pojo.CategoryResponse
 import com.example.foodapp.pojo.Meal
@@ -11,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 
@@ -118,6 +121,29 @@ class Repository {
         }
     }.flowOn(Dispatchers.IO)
 
+    suspend fun addfavoriate(context: Context,meal:Meal):Flow<State<Long>>{
+        return flow {
+            emit(State.Loading)
+            try {
+                val id = withContext(Dispatchers.IO) {
+                    MealDatabase.getInstance(context).mealDao().insertAll(meal)
+                }
+
+                if (id > 0) {
+                    // The item was inserted successfully
+                    emit(State.Success(id))
+                    //Toast.makeText(baseContext, "Item inserted with ID: $id", Toast.LENGTH_SHORT).show()
+                } else {
+                    // There was an issue with the insertion
+                    //Toast.makeText(baseContext, "Failed to insert item", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                // Handle any exceptions that might occur during the insertion
+                //Toast.makeText(baseContext, "Error inserting item: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
 }
 
 
