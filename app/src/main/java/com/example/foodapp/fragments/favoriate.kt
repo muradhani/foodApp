@@ -1,5 +1,6 @@
 package com.example.foodapp.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -18,9 +19,11 @@ import com.example.foodapp.activites.MealActivity
 import com.example.foodapp.adapters.FavoraiteFragmentRvAdapter
 import com.example.foodapp.adapters.FavoraiteItemListener
 import com.example.foodapp.databinding.FragmentFavoriateBinding
+import com.example.foodapp.pojo.Category
 import com.example.foodapp.pojo.Meal
 import com.example.foodapp.state.State
 import com.example.foodapp.viewmodels.FavoriateFramgentViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class favoriate : Fragment(), FavoraiteItemListener {
@@ -105,6 +108,31 @@ class favoriate : Fragment(), FavoraiteItemListener {
         lifecycleScope.launch {
             viewModel.removeFavoriate(meal,this@favoriate.requireContext())
             adapter.removeItem(position)
+            Snackbar.make(requireView(),"meal deleted",Snackbar.LENGTH_SHORT).setAction("undo",View.OnClickListener {
+                lifecycleScope.launch {
+                    viewModel.addFavoriate(requireContext(),meal)
+                    observeAddFavoriate(meal)
+                }
+            }).show()
         }
+    }
+    private fun observeAddFavoriate(item: Meal) {
+        viewModel.inserMealResponse.observe(this@favoriate, Observer {
+            when(it){
+                is State.Loading ->{
+
+                }
+                is State.Success ->{
+                    addToAdatper(item)
+                    Toast.makeText(this.context,"meal added to favorite",Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+
+                }
+            }
+        })
+    }
+    private fun addToAdatper(item:Meal){
+        adapter.addItem(item)
     }
 }
