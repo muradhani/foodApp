@@ -38,6 +38,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/favoriate_framgent_rv_item"/>
+            tools:listitem="@layout/favoriate_framgent_rv_item"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

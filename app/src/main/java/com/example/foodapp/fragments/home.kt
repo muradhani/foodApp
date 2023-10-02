@@ -66,7 +66,7 @@ class home : Fragment(),MealListener ,CategoryListener{
             when(it){
                 is State.Success -> {
                     var CategoryList = it.toData()
-                    var adapter = CategoryAdapter(CategoryList!!, this)
+                    var adapter = CategoryAdapter(CategoryList!!.toMutableList(), this)
                     binding.rvCategories.adapter = adapter
                     binding.cardViewProgressbar.visibility = View.GONE
                 }
@@ -84,7 +84,7 @@ class home : Fragment(),MealListener ,CategoryListener{
             when (it) {
                 is State.Success -> {
                     mealList = it.data
-                    val adapter = MealAdapter(mealList, this)
+                    val adapter = MealAdapter(mealList.toMutableList(), this)
                     binding.recyclerViewRandom.adapter = adapter
                     binding.recyclerViewRandomFrameLayoutProgressBar.visibility = View.GONE
                 }

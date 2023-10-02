@@ -47,6 +47,9 @@ class favoriate : Fragment(), FavoraiteItemListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = FavoraiteFragmentRvAdapter(mutableListOf<Meal>(), this@favoriate)
+        binding.favoriateItemsRv.layoutManager = LinearLayoutManager(requireContext()) // Set the layout manager
+        binding.favoriateItemsRv.adapter = adapter
         observefavoriateMealList()
         observefavoriateMealRemoveFavoraite()
     }
@@ -55,7 +58,8 @@ class favoriate : Fragment(), FavoraiteItemListener {
         viewModel.removeItemResponse.observe(viewLifecycleOwner, Observer {
             if (it is State.Success){
                 lifecycleScope.launch {
-                    viewModel.updateData(this@favoriate.requireContext())
+                    //viewModel.updateData(this@favoriate.requireContext())
+
                 }
                 //adapter.updateData(it.data)
                 Toast.makeText(this@favoriate.context,it.data.toString(),Toast.LENGTH_SHORT).show()
@@ -73,9 +77,7 @@ class favoriate : Fragment(), FavoraiteItemListener {
                 is State.Success -> {
                     list = it.toData()!!
                     Log.i("home",list.toString())
-                    adapter = FavoraiteFragmentRvAdapter(list!!, this@favoriate)
-                    binding.favoriateItemsRv.layoutManager = LinearLayoutManager(requireContext()) // Set the layout manager
-                    binding.favoriateItemsRv.adapter = adapter
+                    updateAdapterList(list)
                     binding.progressbar.visibility = View.GONE
                 }
                 is State.Error ->{
@@ -88,18 +90,22 @@ class favoriate : Fragment(), FavoraiteItemListener {
             }
         })
     }
-}
 
-    override fun onFavoriateItemClicked(meal: Meal) {
+}
+    fun updateAdapterList(list:List<Meal>){
+        adapter.updateData(list)
+    }
+    override fun onFavoriateItemClicked(meal: Meal,position:Int) {
         val intent = Intent(requireActivity(), MealActivity::class.java).apply {
             putExtra("meal",meal.idMeal)
         }
         startActivity(intent)
     }
 
-    override fun onFavoriateBtnClicked(meal: Meal) {
+    override fun onFavoriateBtnClicked(meal: Meal,position:Int) {
         lifecycleScope.launch {
             viewModel.removeFavoriate(meal,this@favoriate.requireContext())
+            adapter.removeItem(position)
         }
     }
 }

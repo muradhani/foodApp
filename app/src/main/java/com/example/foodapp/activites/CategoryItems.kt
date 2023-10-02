@@ -56,7 +56,7 @@ class CategoryItems : AppCompatActivity(), CategoryItemListener {
                     is State.Success ->{
                         var list = it.toData()
                         binding.tvItemsNumber.text = "items: "+ result.toData()!!.size.toString()
-                        var adapter = CategoryItemsAdapter(list!!,this@CategoryItems)
+                        var adapter = CategoryItemsAdapter(list!!.toMutableList(),this@CategoryItems)
                         binding.rvItems.adapter = adapter
                         binding.progressbar.visibility = View.GONE
                     }
