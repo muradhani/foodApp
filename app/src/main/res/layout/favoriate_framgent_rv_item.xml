@@ -53,7 +53,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_favoriate"
+                app:srcCompat="@drawable/ic_delete"
                 android:layout_marginEnd="@dimen/_15sdp" />
 
             <!-- Barrier to make a space and move to a new line -->

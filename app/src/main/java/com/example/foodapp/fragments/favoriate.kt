@@ -51,21 +51,20 @@ class favoriate : Fragment(), FavoraiteItemListener {
         binding.favoriateItemsRv.layoutManager = LinearLayoutManager(requireContext()) // Set the layout manager
         binding.favoriateItemsRv.adapter = adapter
         observefavoriateMealList()
-        observefavoriateMealRemoveFavoraite()
+        //observefavoriateMealRemoveFavoraite()
     }
 
-    private fun observefavoriateMealRemoveFavoraite() {
-        viewModel.removeItemResponse.observe(viewLifecycleOwner, Observer {
-            if (it is State.Success){
-                lifecycleScope.launch {
-                    //viewModel.updateData(this@favoriate.requireContext())
-
-                }
-                //adapter.updateData(it.data)
-                Toast.makeText(this@favoriate.context,it.data.toString(),Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
+//    private fun observefavoriateMealRemoveFavoraite() {
+//        viewModel.removeItemResponse.observe(viewLifecycleOwner, Observer {
+//            if (it is State.Success){
+//                lifecycleScope.launch {
+//                    viewModel.updateData(this@favoriate.requireContext())
+//                }
+//                //adapter.updateData(it.data)
+//                Toast.makeText(this@favoriate.context,it.data.toString(),Toast.LENGTH_SHORT).show()
+//            }
+//        })
+//    }
 
     fun observefavoriateMealList(){
     lifecycleScope.launch {
