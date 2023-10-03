@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.foodapp.activites.CategoryItems
 import com.example.foodapp.activites.MealActivity
@@ -60,7 +61,15 @@ class home : Fragment(),MealListener ,CategoryListener{
             }
             startActivity(intent)
         }
+        searchOnClickListener()
     }
+
+    private fun searchOnClickListener() {
+        binding.searchBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_home2_to_searchFragment)
+        }
+    }
+
     private fun observeCategoryList(){
         viewModel.categoriesList.observe(viewLifecycleOwner, Observer {
             when(it){
@@ -126,6 +135,10 @@ class home : Fragment(),MealListener ,CategoryListener{
 
     override fun onFavouriteClicked(meal: MealX) {
 
+    }
+
+    override fun onHold(meal: MealX) {
+        BottomDialogFragment.newInstance(meal.idMeal).show(childFragmentManager,"meal bottom dialog")
     }
 
     override fun onCategoryClicked(categoryItem: Category) {

@@ -49,6 +49,7 @@
                             android:textStyle="bold" />
 
                         <ImageView
+                            android:id="@+id/search_btn"
                             android:layout_width="@dimen/_40sdp"
                             android:layout_height="match_parent"
                             android:src="@drawable/ic_search" />

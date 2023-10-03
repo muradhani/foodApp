@@ -7,6 +7,8 @@ import com.example.foodapp.pojo.Category
 import com.example.foodapp.pojo.CategoryResponse
 import com.example.foodapp.pojo.Meal
 import com.example.foodapp.pojo.MealX
+import com.example.foodapp.pojo.dto.MealDto
+import com.example.foodapp.pojo.mealResponse
 import com.example.foodapp.retrofit.RetrofitInstance
 import com.example.foodapp.state.State
 import kotlinx.coroutines.Dispatchers
@@ -184,6 +186,26 @@ class Repository {
             }
         }
 
+    }
+    suspend fun search(mealName:String):Flow<State<List<MealDto>>>{
+        return flow {
+            try {
+                emit(State.Loading)
+               // val id = withContext(Dispatchers.Main) {
+                    val result = retrofit.search(mealName)
+                    if (result.isSuccessful){
+                            val mealList = result.body()!!.meals
+                        Log.i("home",mealList.toString())
+                            emit(State.Success(mealList))
+                    }else{
+                        emit(State.Error(result.errorBody().toString()))
+                    }
+                //}
+            } catch (e: Exception) {
+                // Handle any exceptions that might occur during the insertion
+                //Toast.makeText(baseContext, "Error inserting item: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
 

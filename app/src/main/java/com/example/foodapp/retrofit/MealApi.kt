@@ -2,6 +2,7 @@ package com.example.foodapp.retrofit
 
 import com.example.foodapp.pojo.CategoryResponse
 import com.example.foodapp.pojo.ListMeals
+import com.example.foodapp.pojo.dto.MealResponse
 import com.example.foodapp.pojo.mealResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,4 +24,7 @@ interface MealApi {
 
     @GET("categories.php")
     suspend fun getCategoriesList():Response<CategoryResponse>
+
+    @GET("search.php")
+    suspend fun search(@Query("s") mealName:String):Response<MealResponse>
 }

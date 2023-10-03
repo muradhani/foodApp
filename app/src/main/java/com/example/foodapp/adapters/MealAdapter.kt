@@ -16,9 +16,14 @@ class MealAdapter(
     override fun bind(binding: RandomMealItemBinding, item: MealX, position: Int) {
         Glide.with(binding.root).load(item.strMealThumb).into(binding.imMeal)
         binding.root.setOnClickListener { mealListener.onMealClicked(item) }
+        binding.root.setOnLongClickListener {
+            mealListener.onHold(item)
+            true // Return true to indicate that the long click event is consumed
+        }
     }
 }
 interface MealListener {
     fun onMealClicked(meal:MealX)
     fun onFavouriteClicked(meal:MealX)
+    fun onHold(meal:MealX)
 }
