@@ -1,5 +1,6 @@
 package com.example.foodapp.fragments
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.foodapp.R
+import com.example.foodapp.activites.MealActivity
 import com.example.foodapp.adapters.SearchFragmentAdapter
 import com.example.foodapp.adapters.SearchItemListener
 import com.example.foodapp.databinding.FragmentSearchBinding
@@ -103,7 +105,10 @@ class SearchFragment : Fragment(), SearchItemListener {
 
 
     override fun onMealClicked(meal: MealDto, position: Int) {
-        TODO("Not yet implemented")
+        val intent = Intent(requireActivity(), MealActivity::class.java).apply {
+            putExtra("meal",meal.idMeal)
+        }
+        startActivity(intent)
     }
 
 }
