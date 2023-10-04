@@ -13,6 +13,14 @@ class CategoryItemsAdapter (
     override val layoutId: Int
         get() = R.layout.category_item_view
 
+    override fun removeItem(position: Int) {
+
+    }
+
+    override fun addItem(item: MealX) {
+
+    }
+
     override fun bind(binding: CategoryItemViewBinding, item: MealX, position: Int) {
         binding.tvCategoryName.text = item.strMeal
         Glide.with(binding.root).load(item.strMealThumb).into(binding.ivCategory)

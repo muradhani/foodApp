@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 class favoriate : Fragment(), FavoraiteItemListener {
     val viewModel: FavoriateFramgentViewModel by viewModels()
     lateinit var binding:FragmentFavoriateBinding
-    lateinit var list:List<Meal>
+    lateinit var list:MutableList<Meal>
     lateinit var adapter: FavoraiteFragmentRvAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,20 +54,20 @@ class favoriate : Fragment(), FavoraiteItemListener {
         binding.favoriateItemsRv.layoutManager = LinearLayoutManager(requireContext()) // Set the layout manager
         binding.favoriateItemsRv.adapter = adapter
         observefavoriateMealList()
-        //observefavoriateMealRemoveFavoraite()
+        observefavoriateMealRemoveFavoraite()
     }
 
-//    private fun observefavoriateMealRemoveFavoraite() {
-//        viewModel.removeItemResponse.observe(viewLifecycleOwner, Observer {
-//            if (it is State.Success){
-//                lifecycleScope.launch {
-//                    viewModel.updateData(this@favoriate.requireContext())
-//                }
-//                //adapter.updateData(it.data)
-//                Toast.makeText(this@favoriate.context,it.data.toString(),Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//    }
+    private fun observefavoriateMealRemoveFavoraite() {
+        viewModel.removeItemResponse.observe(viewLifecycleOwner, Observer {
+            if (it is State.Success){
+                lifecycleScope.launch {
+                    viewModel.updateData(this@favoriate.requireContext())
+                }
+                //adapter.updateData(it.data)
+                Toast.makeText(this@favoriate.context,it.data.toString(),Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 
     fun observefavoriateMealList(){
     lifecycleScope.launch {
@@ -77,7 +77,7 @@ class favoriate : Fragment(), FavoraiteItemListener {
                     binding.progressbar.visibility = View.VISIBLE
                 }
                 is State.Success -> {
-                    list = it.toData()!!
+                    list = it.toData()!!.toMutableList()
                     Log.i("home",list.toString())
                     updateAdapterList(list)
                     binding.progressbar.visibility = View.GONE
@@ -107,7 +107,10 @@ class favoriate : Fragment(), FavoraiteItemListener {
     override fun onFavoriateBtnClicked(meal: Meal,position:Int) {
         lifecycleScope.launch {
             viewModel.removeFavoriate(meal,this@favoriate.requireContext())
-            adapter.removeItem(position)
+            list.removeAt(position)
+            //adapter.setUserList(list.toMutableList())
+            adapter.updateData(list.toMutableList())
+            observefavoriateMealRemoveFavoraite()
             Snackbar.make(requireView(),"meal deleted",Snackbar.LENGTH_SHORT).setAction("undo",View.OnClickListener {
                 lifecycleScope.launch {
                     viewModel.addFavoriate(requireContext(),meal)

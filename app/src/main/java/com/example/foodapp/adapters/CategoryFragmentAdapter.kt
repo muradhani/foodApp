@@ -13,6 +13,14 @@ class CategoryFragmentAdapter(
     override val layoutId: Int
         get() = R.layout.categories_fragment_rv_item
 
+    override fun removeItem(position: Int) {
+
+    }
+
+    override fun addItem(item: Category) {
+
+    }
+
     override fun bind(binding: CategoriesFragmentRvItemBinding, item: Category, position: Int) {
        Glide.with(binding.root).load(item.strCategoryThumb).into(binding.ivCategoryImg)
         binding.tvCategoryName.text = item.strCategory

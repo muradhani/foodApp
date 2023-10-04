@@ -15,6 +15,14 @@ class SearchFragmentAdapter(
     override val layoutId: Int
         get() = R.layout.search_fragment_rv_item
 
+    override fun removeItem(position: Int) {
+
+    }
+
+    override fun addItem(item: MealDto) {
+
+    }
+
     override fun bind(binding: SearchFragmentRvItemBinding, item: MealDto, position: Int) {
         Glide.with(binding.root).load(item.strMealThumb).into(binding.mealImgIv)
         binding.mealNameTv.text = item.strMeal

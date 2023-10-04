@@ -13,6 +13,14 @@ class MealAdapter(
     override val layoutId: Int
         get() = R.layout.random_meal_item
 
+    override fun removeItem(position: Int) {
+
+    }
+
+    override fun addItem(item: MealX) {
+
+    }
+
     override fun bind(binding: RandomMealItemBinding, item: MealX, position: Int) {
         Glide.with(binding.root).load(item.strMealThumb).into(binding.imMeal)
         binding.root.setOnClickListener { mealListener.onMealClicked(item) }
