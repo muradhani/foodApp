@@ -22,7 +22,8 @@ class FavoraiteFragmentRvAdapter(
     }
 
     override fun addItem(item: Meal) {
-
+        items.add(item)
+        notifyDataSetChanged()
     }
 
     override fun bind(binding: FavoriateFramgentRvItemBinding, item: Meal, position: Int) {

@@ -64,7 +64,7 @@ class favoriate : Fragment(), FavoraiteItemListener {
                     viewModel.updateData(this@favoriate.requireContext())
                 }
                 //adapter.updateData(it.data)
-                Toast.makeText(this@favoriate.context,it.data.toString(),Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@favoriate.context,it.data.toString(),Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -78,9 +78,17 @@ class favoriate : Fragment(), FavoraiteItemListener {
                 }
                 is State.Success -> {
                     list = it.toData()!!.toMutableList()
-                    Log.i("home",list.toString())
-                    updateAdapterList(list)
-                    binding.progressbar.visibility = View.GONE
+                    if (list.isEmpty()){
+                        binding.errorTv.visibility = View.VISIBLE
+                        binding.progressbar.visibility = View.GONE
+                    }
+                    else{
+                        //Log.i("home",list.toString())
+                        updateAdapterList(list)
+                        binding.progressbar.visibility = View.GONE
+                        binding.errorTv.visibility = View.GONE
+                    }
+
                 }
                 is State.Error ->{
                     binding.errorTv.text = it.message
@@ -115,6 +123,7 @@ class favoriate : Fragment(), FavoraiteItemListener {
                 lifecycleScope.launch {
                     viewModel.addFavoriate(requireContext(),meal)
                     observeAddFavoriate(meal)
+
                 }
             }).show()
         }
@@ -128,6 +137,8 @@ class favoriate : Fragment(), FavoraiteItemListener {
                 is State.Success ->{
                     addToAdatper(item)
                     Toast.makeText(this.context,"meal added to favorite",Toast.LENGTH_SHORT).show()
+                    observefavoriateMealList()
+                    observefavoriateMealRemoveFavoraite()
                 }
                 else -> {
 
