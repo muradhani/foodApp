@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.foodapp.R
 import com.example.foodapp.activites.CategoryItems
 import com.example.foodapp.adapters.CategoryFragmentAdapter
@@ -47,10 +48,16 @@ class categories : Fragment() , CategoryFragmentListener {
         lifecycleScope.launch {
             viewModel.getCategoryList()
             observeCateogryList()
+            searchOnClickListener()
             adapter = CategoryFragmentAdapter(list,this@categories)
             binding.categoriesRv.adapter = adapter
         }
 
+    }
+    private fun searchOnClickListener() {
+        binding.searchBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_categories_to_searchFragment)
+        }
     }
 
     private fun observeCateogryList() {

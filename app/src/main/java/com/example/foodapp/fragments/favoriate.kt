@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodapp.R
 import com.example.foodapp.activites.MealActivity
@@ -51,12 +52,17 @@ class favoriate : Fragment(), FavoraiteItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = FavoraiteFragmentRvAdapter(mutableListOf<Meal>(), this@favoriate)
+        searchOnClickListener()
         binding.favoriateItemsRv.layoutManager = LinearLayoutManager(requireContext()) // Set the layout manager
         binding.favoriateItemsRv.adapter = adapter
         observefavoriateMealList()
         observefavoriateMealRemoveFavoraite()
     }
-
+    private fun searchOnClickListener() {
+        binding.searchBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_favoriate_to_searchFragment)
+        }
+    }
     private fun observefavoriateMealRemoveFavoraite() {
         viewModel.removeItemResponse.observe(viewLifecycleOwner, Observer {
             if (it is State.Success){

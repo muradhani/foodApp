@@ -18,12 +18,20 @@
         android:id="@+id/favoriate"
         android:name="com.example.foodapp.fragments.favoriate"
         android:label="fragment_favoriate"
-        tools:layout="@layout/fragment_favoriate" />
+        tools:layout="@layout/fragment_favoriate" >
+        <action
+            android:id="@+id/action_favoriate_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
     <fragment
         android:id="@+id/categories"
         android:name="com.example.foodapp.fragments.categories"
         android:label="fragment_categories"
-        tools:layout="@layout/fragment_categories" />
+        tools:layout="@layout/fragment_categories" >
+        <action
+            android:id="@+id/action_categories_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.foodapp.fragments.SearchFragment"
